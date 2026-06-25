@@ -14,12 +14,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
- useEffect(() => {
-  const session = localStorage.getItem('user_session');
-  if (!session) {
-    window.location.href = '/login'; 
-  }
-}, []);
+  useEffect(() => setMounted(true), []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
