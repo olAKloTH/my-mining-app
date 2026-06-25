@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import { supabase } from '@/lib/supabaseClient';
 
 const thaiProvinces = [
   "กรุงเทพมหานคร", "กระบี่", "กาญจนบุรี", "กาฬสินธุ์", "กำแพงเพชร", "ขอนแก่น", "จันทบุรี", "ฉะเชิงเทรา", "ชลบุรี", "ชัยนาท", "ชัยภูมิ", "ชุมพร", "เชียงราย", "เชียงใหม่", "ตรัง", "ตราด", "ตาก", "นครนายก", "นครปฐม", "นครพนม", "นครราชสีมา", "นครศรีธรรมราช", "นครสวรรค์", "นนทบุรี", "นราธิวาส", "น่าน", "บึงกาฬ", "บุรีรัมย์", "ปทุมธานี", "ประจวบคีรีขันธ์", "ปราจีนบุรี", "ปัตตานี", "พระนครศรีอยุธยา", "พะเยา", "พังงา", "พัทลุง", "พิจิตร", "พิษณุโลก", "เพชรบุรี", "เพชรบูรณ์", "แพร่", "ภูเก็ต", "มหาสารคาม", "มุกดาหาร", "แม่ฮ่องสอน", "ยโสธร", "ยะลา", "ร้อยเอ็ด", "ระนอง", "ระยอง", "ราชบุรี", "ลพบุรี", "ลำปาง", "ลำพูน", "เลย", "ศรีสะเกษ", "สกลนคร", "สงขลา", "สตูล", "สมุทรปราการ", "สมุทรสงคราม", "สมุทรสาคร", "สระแก้ว", "สระบุรี", "สิงห์บุรี", "สุโขทัย", "สุพรรณบุรี", "สุราษฎร์ธานี", "สุรินทร์", "หนองคาย", "หนองบัวลำภู", "อ่างทอง", "อำนาจเจริญ", "อุดรธานี", "อุตรดิตถ์", "อุทัยธานี", "อุบลราชธานี"
@@ -14,6 +15,25 @@ export default function SignupPage() {
   useEffect(() => {
     setMounted(true);
   }, []);
+  // แทรกไว้เหนือ return (...)
+const [formData, setFormData] = useState({ 
+  firstName: '', lastName: '', email: '', password: '', phone: '', address: '', province: '', zip: '' 
+});
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  const { error } = await supabase.from('users').insert([{
+    first_name: formData.firstName,
+    last_name: formData.lastName,
+    email: formData.email,
+    password: formData.password, // รหัสผ่านจะถูกเก็บตรงนี้
+    phone: formData.phone,
+    address: formData.address,
+    province: formData.province,
+    zip: formData.zip
+  }]);
+  alert(error ? "ผิดพลาด: " + error.message : "ลงทะเบียนเรียบร้อยแล้ว");
+};
 
   return (
     <div className="relative min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 overflow-hidden">
@@ -87,6 +107,17 @@ export default function SignupPage() {
             <label className="block text-sm font-medium text-slate-400 mb-1">อีเมล</label>
             <input type="email" className="w-full bg-slate-950 border border-white/10 rounded-xl p-3 text-white focus:ring-2 focus:ring-yellow-500 outline-none" placeholder="name@email.com" required />
           </div>
+
+          <div>
+  <label className="block text-sm font-medium text-slate-400 mb-1">รหัสผ่าน</label>
+  <input 
+    type="password" 
+    className="w-full bg-slate-950 border border-white/10 rounded-xl p-3 text-white focus:ring-2 focus:ring-yellow-500 outline-none" 
+    placeholder="********" 
+    required 
+    onChange={(e) => setFormData({...formData, password: e.target.value})} 
+  />
+</div>
 
           <div>
             <label className="block text-sm font-medium text-slate-400 mb-1">เบอร์โทรศัพท์</label>
