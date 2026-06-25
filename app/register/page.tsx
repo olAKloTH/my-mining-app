@@ -125,6 +125,7 @@ export default function SignupPage() {
             <div>
               <label className="block text-sm font-medium text-slate-400 mb-1">จังหวัด</label>
               <select onChange={(e) => setFormData({...formData, province: e.target.value})} className="w-full bg-slate-950 border border-white/10 rounded-xl p-3 text-white focus:ring-2 focus:ring-yellow-500 outline-none" required>
+                defaultValue=""
                 <option value="" disabled selected>เลือกจังหวัด</option>
                 {thaiProvinces.map((province) => <option key={province} value={province}>{province}</option>)}
               </select>
