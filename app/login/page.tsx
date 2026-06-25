@@ -21,15 +21,22 @@ export default function LoginPage() {
     setIsLoading(true);
     setErrorMsg('');
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    // Query หา user จากตาราง users ที่พี่สร้างไว้
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .eq('password', password) // เช็คจากตาราง users ตรงๆ
+      .single();
 
-    if (error) {
-      setErrorMsg("เข้าสู่ระบบไม่สำเร็จ: " + error.message);
+    if (error || !data) {
+      // ถ้าหาไม่เจอ หรือ password ไม่ตรง ให้แจ้งเตือน
+      setErrorMsg("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
     } else {
-      window.location.href = '/';
+      // ล็อกอินสำเร็จ: เก็บข้อมูล user ไว้ใน localStorage เพื่อใช้งานต่อ
+      localStorage.setItem('user_session', JSON.stringify(data));
+      // วิ่งไปหน้าหลักหรือหน้าขุดทอง
+      window.location.href = '/'; 
     }
     setIsLoading(false);
   };
