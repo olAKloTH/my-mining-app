@@ -10,8 +10,6 @@ const thaiProvinces = [
 
 export default function SignupPage() {
   const [mounted, setMounted] = useState(false);
-  // เพิ่ม State สำหรับเก็บรหัสผ่าน
-  const [password, setPassword] = useState('');
 
   useEffect(() => {
     setMounted(true);
@@ -54,6 +52,9 @@ export default function SignupPage() {
       {/* 2. Container หลัก */}
       <div className="relative z-10 w-full max-w-md bg-slate-900/60 backdrop-blur-xl p-8 rounded-3xl border border-white/10 shadow-2xl">
         
+        {/* ========================================= */}
+        {/* เพิ่มปุ่มรูปบ้าน (Home) ที่มุมขวาบนของกล่อง */}
+        {/* ========================================= */}
         <Link 
           href="/" 
           className="absolute top-6 right-6 text-slate-500 hover:text-yellow-500 transition-all hover:scale-110 active:scale-95"
@@ -85,19 +86,6 @@ export default function SignupPage() {
           <div>
             <label className="block text-sm font-medium text-slate-400 mb-1">อีเมล</label>
             <input type="email" className="w-full bg-slate-950 border border-white/10 rounded-xl p-3 text-white focus:ring-2 focus:ring-yellow-500 outline-none" placeholder="name@email.com" required />
-          </div>
-
-          {/* ช่องรหัสผ่านที่เพิ่มเข้ามา */}
-          <div>
-            <label className="block text-sm font-medium text-slate-400 mb-1">รหัสผ่าน</label>
-            <input 
-              type="password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-slate-950 border border-white/10 rounded-xl p-3 text-white focus:ring-2 focus:ring-yellow-500 outline-none" 
-              placeholder="••••••••" 
-              required 
-            />
           </div>
 
           <div>
