@@ -14,7 +14,12 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+  const session = localStorage.getItem('user_session');
+  if (!session) {
+    window.location.href = '/login'; // ถ้ายังไม่ล็อกอิน ให้ดีดกลับไปหน้า Login
+  }
+}, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
