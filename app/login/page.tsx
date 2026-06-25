@@ -8,8 +8,8 @@ import { supabase } from '@/lib/supabaseClient';
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
-
-  // ส่วนนี้คือ Logic ที่เพิ่มเข้าไปเพื่อเชื่อม Supabase โดยไม่กระทบ UI
+  
+  // Logic ที่พี่ต้องการเชื่อม Supabase
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
@@ -53,7 +53,7 @@ export default function LoginPage() {
         ))}
       </div>
 
-      {/* 2. Login Card (โครงสร้างเดิมของพี่) */}
+      {/* 2. Login Card */}
       <motion.div 
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -68,7 +68,6 @@ export default function LoginPage() {
         />
         <div className="relative w-full max-w-md bg-slate-900/95 backdrop-blur-3xl p-8 rounded-[2.45rem] z-10 border border-white/5">
           
-          {/* ปุ่มกลับหน้าหลัก - คงเดิมเป๊ะ */}
           <Link href="/" className="absolute top-6 right-6 text-slate-500 hover:text-yellow-500 transition-colors">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -77,7 +76,6 @@ export default function LoginPage() {
           </Link>
 
           <div className="text-center mb-8">
-            {/* โลโก้ - คงเดิมเป๊ะ */}
             <div className="w-40 h-40 mx-auto relative mb-6 drop-shadow-[0_0_15px_rgba(234,179,8,0.5)]">
               <Image src="/logom.png" alt="Logo" width={240} height={240} className="object-contain w-full h-full" />
             </div>
@@ -101,7 +99,8 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-8 pt-6 border-t border-white/5 text-center">
-            <Link href="/singup" className="group text-sm font-bold text-slate-400 hover:text-yellow-500 transition-colors">
+            {/* แก้ไขตรงนี้ให้ตรงกับโฟลเดอร์ register ของพี่ครับ */}
+            <Link href="/register" className="group text-sm font-bold text-slate-400 hover:text-yellow-500 transition-colors">
               ยังไม่มีบัญชีขุดทอง? <span className="text-yellow-500">ลงทะเบียนที่นี่</span>
             </Link>
           </div>
