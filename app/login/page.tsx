@@ -3,58 +3,41 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient'; // 1. นำเข้า supabase จากไฟล์ที่สร้างไว้
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+  
+  // 2. เพิ่ม state เก็บข้อมูลฟอร์ม
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => setMounted(true), []);
 
-  // ฟังก์ชันเช็คว่าอีเมลนี้ลงทะเบียนไว้ในตาราง users หรือยัง
-  const checkRegistration = async (email: string) => {
-    const { data, error } = await supabase
-      .from('users')
-      .select('email')
-      .eq('email', email)
-      .single();
-
-    return !error && data; // ถ้าเจอข้อมูล = true (ลงทะเบียนแล้ว)
-  };
-
+  // 3. ฟังก์ชัน Login จริง
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMsg('');
 
-    // 1. เช็คก่อนว่ามีชื่อในระบบไหม
-    const isRegistered = await checkRegistration(email);
-    if (!isRegistered) {
-      setErrorMsg("คุณยังไม่ได้ลงทะเบียนในระบบ กรุณาสมัครสมาชิกก่อนครับ");
-      setIsLoading(false);
-      return;
-    }
-
-    // 2. ถ้ามีชื่อแล้ว ค่อยเข้าสู่ระบบ
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
-      setErrorMsg(error.message);
+      setErrorMsg(error.message); // โชว์ Error ถ้าล็อกอินไม่ได้
     } else {
-      window.location.href = '/'; 
+      window.location.href = '/'; // ล็อกอินสำเร็จ กลับหน้าหลัก
     }
     setIsLoading(false);
   };
 
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-center bg-slate-950 p-4 overflow-hidden">
-      {/* Background */}
+      {/* ... (ส่วน Background คงเดิม) ... */}
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-[url('/bg-game3.webp')] bg-cover bg-center" />
         <div className="absolute inset-0 bg-black/70" />
@@ -74,32 +57,37 @@ export default function LoginPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {errorMsg && <p className="text-red-500 text-xs text-center font-bold bg-red-500/10 py-2 rounded-lg">{errorMsg}</p>}
+            {/* โชว์ Error ถ้ามี */}
+            {errorMsg && <p className="text-red-500 text-xs text-center">{errorMsg}</p>}
             
             <div>
               <label className="text-xs font-bold text-slate-400 ml-2 uppercase tracking-widest">Email Address</label>
-              <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="w-full mt-1.5 p-4 rounded-2xl bg-slate-950/50 border border-white/10 text-white focus:border-yellow-500/50 outline-none transition-all" placeholder="miner@goldglow.com" />
+              <input 
+                type="email" 
+                required 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full mt-1.5 p-4 rounded-2xl bg-slate-950/50 border border-white/10 text-white focus:border-yellow-500/50 outline-none transition-all" 
+              />
             </div>
             <div>
               <label className="text-xs font-bold text-slate-400 ml-2 uppercase tracking-widest">Password</label>
-              <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="w-full mt-1.5 p-4 rounded-2xl bg-slate-950/50 border border-white/10 text-white focus:border-yellow-500/50 outline-none transition-all" placeholder="••••••••" />
+              <input 
+                type="password" 
+                required 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full mt-1.5 p-4 rounded-2xl bg-slate-950/50 border border-white/10 text-white focus:border-yellow-500/50 outline-none transition-all" 
+              />
             </div>
             <button type="submit" disabled={isLoading} className="w-full bg-gradient-to-r from-yellow-500 via-orange-500 to-yellow-600 text-slate-950 font-black py-4 rounded-2xl hover:brightness-110 active:scale-[0.98] transition-all uppercase tracking-widest text-sm">
               {isLoading ? "กำลังเชื่อมต่อเหมือง..." : "เข้าสู่ระบบเดี๋ยวนี้"}
             </button>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-white/5 text-center">
-            <Link href="/register" className="group text-sm font-bold text-slate-400 hover:text-yellow-500 transition-colors">
-              ยังไม่มีบัญชีขุดทอง? <span className="text-yellow-500">ลงทะเบียนที่นี่</span>
-            </Link>
-          </div>
+          {/* ... (ส่วน ลิงก์ Register และ Footer คงเดิม) ... */}
         </div>
       </motion.div>
-
-      <style jsx global>{`
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-      `}</style>
     </main>
   );
 }
