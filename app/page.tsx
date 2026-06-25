@@ -41,12 +41,12 @@ export default function Page() {
             <Image src="/logocenter.webp" alt="Logo" fill className="object-contain" priority />
           </div>
           
-          <h1 className="text-3xl md:text-5xl font-black text-yellow-400 drop-shadow-md">
-            Goal Gold Glow Miner
+          <h1 className="text-3xl md:text-5xl font-black text-yellow-400 [text-shadow:_3px_3px_0_rgb(0,0,0),_5px_5px_10px_rgba(0,0,0,0.5)]">
+              Goal Gold Glow Miner
           </h1>
-          <p className="text-white/80 text-sm font-bold tracking-[0.2em] uppercase mt-2">
-            Welcome To Close Beta
-          </p>
+             <p className="text-white font-bold text-sm tracking-[0.2em] uppercase mt-2 [text-shadow:_1px_1px_0_rgb(0,0,0)]">
+              Welcome To Close Beta
+             </p>
 
           <div className="w-full max-w-2xl bg-yellow-400 py-2 rounded-full shadow-md overflow-hidden mt-6">
             <motion.div 
