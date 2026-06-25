@@ -9,7 +9,6 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
   
-  // Logic ที่พี่ต้องการเชื่อม Supabase
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
@@ -21,22 +20,21 @@ export default function LoginPage() {
     setIsLoading(true);
     setErrorMsg('');
 
-    // Query หา user จากตาราง users ที่พี่สร้างไว้
+    // Query หา user จากตาราง users ที่สร้างไว้
     const { data, error } = await supabase
       .from('users')
       .select('*')
-      .eq('email', email)
-      .eq('password', password) // เช็คจากตาราง users ตรงๆ
+      .eq('email', email.trim())
+      .eq('password', password)
       .single();
 
     if (error || !data) {
-      // ถ้าหาไม่เจอ หรือ password ไม่ตรง ให้แจ้งเตือน
       setErrorMsg("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
     } else {
-      // ล็อกอินสำเร็จ: เก็บข้อมูล user ไว้ใน localStorage เพื่อใช้งานต่อ
+      // ล็อกอินสำเร็จ: เก็บข้อมูล session
       localStorage.setItem('user_session', JSON.stringify(data));
-      // วิ่งไปหน้าหลักหรือหน้าขุดทอง
-      window.location.href = '/'; 
+      // เด้งไปหน้าเหมืองทันที
+      window.location.href = '/mining'; 
     }
     setIsLoading(false);
   };
@@ -106,7 +104,6 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-8 pt-6 border-t border-white/5 text-center">
-            {/* แก้ไขตรงนี้ให้ตรงกับโฟลเดอร์ register ของพี่ครับ */}
             <Link href="/register" className="group text-sm font-bold text-slate-400 hover:text-yellow-500 transition-colors">
               ยังไม่มีบัญชีขุดทอง? <span className="text-yellow-500">ลงทะเบียนที่นี่</span>
             </Link>
