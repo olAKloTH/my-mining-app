@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import DiggingCanvas from "../../mining/DiggingCanvas";
-import EnergyBar from "./EnergyBar"; 
+
 
 interface MiningAreaProps {
   onCollect: () => void;
@@ -227,10 +227,7 @@ export default function MiningArea({
           </div>
         </div>
 
-        {/* Energy Bar */}
-        <div className="mt-6">
-          <EnergyBar energyTimeLeft={18.5} maxEnergyTime={24} />
-        </div>
+       
 
       </div>
     </section>
