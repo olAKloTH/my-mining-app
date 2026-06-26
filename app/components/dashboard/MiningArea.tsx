@@ -47,7 +47,6 @@ export default function MiningArea({
 
   return (
     <section className="bg-[#0a0a0a] rounded-2xl overflow-hidden border border-white/5">
-      
       {/* 1. ส่วนรูปเหมือง */}
       <div className="relative w-full h-64 overflow-hidden bg-black">
         <AnimatePresence mode="wait">
@@ -70,20 +69,20 @@ export default function MiningArea({
           </div>
         </div>
 
-        {/* ย้ายมาอยู่มุมขวาล่างแล้วครับ */}
+        {/* มุมขวาล่าง: EQUIPMENT และ BUFF */}
         <div className="absolute bottom-4 right-4 z-20 flex gap-4">
-          <div className="flex flex-col items-end">
-            <p className="text-[7px] text-white/70 uppercase font-bold mb-1 tracking-[0.2em]">EQUIPMENT</p>
+          <div className="flex flex-col items-center">
+            <p className="text-[7px] text-white uppercase font-bold mb-1 tracking-[0.2em] [text-shadow:_1px_1px_2px_rgb(0_0_0_/_100%)]">EQUIPMENT</p>
             <div className="flex gap-1.5">{equipmentSlots.map((c, i) => <div key={i} className="w-8 h-8 bg-black/60 border border-yellow-500/30 rounded flex items-center justify-center text-[7px] text-white/40 font-bold">P{i+1}</div>)}</div>
           </div>
-          <div className="flex flex-col items-end">
-            <p className="text-[7px] text-yellow-400/80 uppercase font-bold mb-1 tracking-[0.2em]">ITEM BUFF</p>
+          <div className="flex flex-col items-center">
+            <p className="text-[7px] text-yellow-400 uppercase font-bold mb-1 tracking-[0.2em] [text-shadow:_1px_1px_2px_rgb(0_0_0_/_100%)]">ITEM BUFF</p>
             <div className="flex gap-1.5">{buffSlots.map((c, i) => <div key={i} className="w-8 h-8 bg-black/60 border border-blue-500/30 rounded flex items-center justify-center text-[7px] text-white/40 font-bold">B{i+1}</div>)}</div>
           </div>
         </div>
-      </div>
+      </div> 
       
-      {/* 2. ส่วนควบคุมด้านล่าง (คงเดิม) */}
+      {/* 2. ส่วนควบคุมด้านล่าง */}
       <div className="p-6"> 
         <div className="flex justify-between items-end mb-6">
           <div>
