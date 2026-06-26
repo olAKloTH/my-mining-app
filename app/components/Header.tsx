@@ -27,13 +27,13 @@ export default function Header() {
           <a href="/surf" className="hover:text-orange-500 transition-colors">Magic Scroll</a>
           <a href="/offers" className="hover:text-orange-500 transition-colors">Expedition</a>
           <a href="/mining" className="hover:text-orange-500 transition-colors">Mining</a>
-          <a href="/forum" className="hover:text-orange-500 transition-colors">Merchant Guild</a>
+          <a href="/marchant guild" className="hover:text-orange-500 transition-colors">Merchant Guild</a>
         </nav>
 
-        {/* 3. ส่วนขวา: บัญชี/Logout */}
+        {/* 3. ส่วนขวา: ลงทะเบียน/Login */}
         <div className="flex gap-4 text-sm font-medium">
-          <a href="/account" className="text-stone-300 hover:text-white transition-colors">Account</a>
-          <a href="/logout" className="text-orange-500 hover:text-orange-400 transition-colors">Logout</a>
+          <a href="/register" className="text-stone-300 hover:text-white transition-colors">ลงทะเบียน</a>
+          <a href="/login" className="text-orange-500 hover:text-orange-400 transition-colors">Login</a>
         </div>
         
       </div>
