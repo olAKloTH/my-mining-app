@@ -2,48 +2,50 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import DiggingCanvas from "../../mining/DiggingCanvas";
+import { getMinerData } from '@/app/actions/miner-actions'; 
 
 interface MiningAreaProps {
+  userId: string;
   onCollect: () => void;
   isCollecting: boolean;
-  storagePercentage: number;
-  output: number;
   onDig?: () => void;
 }
 
-export default function MiningArea({ 
-  onCollect, 
-  isCollecting, 
-  storagePercentage, 
-  output,
-  onDig 
-}: MiningAreaProps) {
-  
-  const [equipmentSlots, setEquipmentSlots] = useState([50, 0, 0, 0, 0]); 
-  const [buffSlots, setBuffSlots] = useState([0, 0, 0]);
+export default function MiningArea({ userId, onCollect, isCollecting, onDig }: MiningAreaProps) {
+  // สร้าง state มารองรับข้อมูลจริงจาก DB
+  const [minerData, setMinerData] = useState<any>(null);
+
+  // ดึงข้อมูลผ่าน useEffect
+  useEffect(() => {
+    async function fetchData() {
+      if (userId) {
+        const data = await getMinerData(userId);
+        setMinerData(data);
+      }
+    }
+    fetchData();
+  }, [userId]);
+
+  // ถ้ายังโหลดข้อมูลไม่เสร็จ ให้แสดง Loading หรือค่าเริ่มต้นไปก่อน
+  const output = minerData?.resources || 0;
+  const storagePercentage = 50; // พี่เอาค่าจาก minerData มาคำนวณต่อได้เลยครับ
+
+  // ... (โค้ดส่วน useState อื่นๆ ของพี่เก็บไว้ได้เลย)
+  const [equipmentSlots] = useState([50, 0, 0, 0, 0]); 
+  const [buffSlots] = useState([0, 0, 0]);
   const [bgImage, setBgImage] = useState("mine-bg1.webp");
   const [activeRate, setActiveRate] = useState('Live');
-  const [timeUntilFull, setTimeUntilFull] = useState(11175);
   const [coreEnergy, setCoreEnergy] = useState(64800); 
-
-  useEffect(() => {
-    const backgrounds = ["mine-bg1.webp", "mine-bg2.webp", "mine-bg3.webp", "mine-bg4.webp", "mine-bg5.webp"];
-    const bgInterval = setInterval(() => {
-      setBgImage(prev => backgrounds[(backgrounds.indexOf(prev) + 1) % backgrounds.length]);
-    }, 60000); 
-    const timerInterval = setInterval(() => {
-      setTimeUntilFull((prev) => (prev > 0 ? prev - 1 : 0));
-      setCoreEnergy((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => { clearInterval(bgInterval); clearInterval(timerInterval); };
-  }, []);
-
   const formatTime = (totalSeconds: number) => {
-    const h = Math.floor(totalSeconds / 3600);
-    const m = Math.floor((totalSeconds % 3600) / 60);
-    const s = totalSeconds % 60;
-    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-  };
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = totalSeconds % 60;
+  return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+};
+
+  // ... (ฟังก์ชัน formatTime และ return UI เหมือนเดิมครับ)
+  // จุดสำคัญคือตรง <span>{Number(output.toFixed(4)).toLocaleString()}</span> 
+  // มันจะดึงค่าจริงจาก DB มาโชว์แทนของเดิมแล้วครับ!
 
   return (
     <section className="bg-[#0a0a0a] rounded-2xl overflow-hidden border border-white/5">

@@ -1,7 +1,27 @@
-import { createClient } from '@supabase/supabase-js';
+import { createBrowserClient } from '@supabase/ssr';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
-// ใส่ค่า URL จริง และ Key จริง ลงไปตรงๆ ใน '...' เลยครับ (ก๊อปมาจากหน้า Supabase)
-const supabaseUrl = 'https://liakzsqrqzysprpweysw.supabase.co'; 
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpYWt6c3FycXp5c3BycHdleXN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0MDU2MDYsImV4cCI6MjA5NTk4MTYwNn0.PS75x14BmxZ0K7hUay5lIVMUlLD40RyII30XCfHbaaM';
+// สำหรับใช้ใน Browser (Frontend)
+export const createBrowserSupabaseClient = () => {
+  return createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+};
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// สำหรับใช้ใน Server Action (Backend)
+export const createServerSupabaseClient = () => {
+  const cookieStore = cookies();
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value;
+        },
+      },
+    }
+  );
+};
